@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16
+    container_name: buggy-shop-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: buggyshop
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - except-ai-postgres-volume:/var/lib/postgresql/data
+    ports:
+      - "5442:5432"
+volumes:
+  except-ai-postgres-volume:
