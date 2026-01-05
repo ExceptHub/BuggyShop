@@ -29,7 +29,7 @@ spring:
     type: simple
 
 server:
-  port: 8083
+  port: 8081
 
 logging:
   level:
@@ -39,8 +39,14 @@ logging:
 
 excepthub:
   enabled: ${EXCEPTHUB_ENABLED:true}
-  api-key: ${EXCEPTHUB_API_KEY:eak_test}
+  api-key: ${EXCEPTHUB_API_KEY:eak_52ca19d1258b407c876c9944b2785440}
   endpoint: ${EXCEPTHUB_ENDPOINT:https://api.excepthub.dev/api/v1/errors}
   service: BuggyShop
   environment: test
   release: 1.0.0
+
+buggyshop:
+  scheduler:
+    # Enable/disable automatic error generation crons
+    enabled: ${SCHEDULER_ENABLED:true}
+    # Set to false during manual testing, true for automated stress testing

@@ -66,6 +66,14 @@ public class ProductService {
     public Page<ProductResponse> getProducts(int page, int size, String sortBy) {
         log.info("Getting products: page={}, size={}, sortBy={}", page, size, sortBy);
 
+        // Validate sort field
+        List<String> validSortFields = List.of("name", "price", "createdAt", "id");
+        if (!validSortFields.contains(sortBy)) {
+            throw new IllegalArgumentException(
+                    String.format("Invalid sort field: '%s'. Allowed fields: %s",
+                            sortBy, String.join(", ", validSortFields)));
+        }
+
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
 
         Page<Product> products = productRepository.findAll(pageable);
@@ -116,6 +124,12 @@ public class ProductService {
 
     public void addToBundle(Long productId, Long bundledProductId) {
         log.info("Adding product {} to bundle {}", bundledProductId, productId);
+
+        // Prevent circular dependency
+        if (productId.equals(bundledProductId)) {
+            throw new IllegalArgumentException(
+                    "Cannot add product to its own bundle. Circular dependency detected.");
+        }
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
