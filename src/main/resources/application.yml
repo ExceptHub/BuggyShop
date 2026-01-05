@@ -3,9 +3,9 @@ spring:
     name: BuggyShop
 
   datasource:
-    url: jdbc:postgresql://localhost:5442/buggyshop
-    username: admin
-    password: admin
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5442/buggyshop}
+    username: ${DATABASE_USERNAME:admin}
+    password: ${DATABASE_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
@@ -42,8 +42,8 @@ excepthub:
   api-key: ${EXCEPTHUB_API_KEY:eak_52ca19d1258b407c876c9944b2785440}
   endpoint: ${EXCEPTHUB_ENDPOINT:https://api.excepthub.dev/api/v1/errors}
   service: BuggyShop
-  environment: test
-  release: 1.0.0
+  environment: ${ENVIRONMENT:test}
+  release: ${RELEASE_VERSION:1.0.0}
 
 buggyshop:
   scheduler:
