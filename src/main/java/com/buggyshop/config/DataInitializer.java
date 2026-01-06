@@ -25,6 +25,8 @@ public class DataInitializer implements CommandLineRunner {
     private final CartRepository cartRepository;
     private final CouponRepository couponRepository;
     private final AddressRepository addressRepository;
+    private final ReviewRepository reviewRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     @Transactional
@@ -35,6 +37,7 @@ public class DataInitializer implements CommandLineRunner {
         createCategories();
         createProducts();
         createCoupons();
+        createReviewsAndOrders();
 
         log.info("Test data initialization complete!");
     }
@@ -284,5 +287,124 @@ public class DataInitializer implements CommandLineRunner {
         couponRepository.saveAll(List.of(validCoupon, expiredCoupon, limitedCoupon));
 
         log.info("Created {} coupons", 3);
+    }
+
+    private void createReviewsAndOrders() {
+        List<User> users = userRepository.findAll();
+        List<Product> products = productRepository.findAll();
+
+        if (users.isEmpty() || products.isEmpty()) {
+            log.warn("Cannot create reviews and orders - no users or products found");
+            return;
+        }
+
+        // Create reviews for each product to trigger N+1 queries
+        int reviewCount = 0;
+        for (Product product : products) {
+            // Create 3-8 reviews per product
+            int numReviews = 3 + (int) (Math.random() * 6);
+            for (int i = 0; i < numReviews; i++) {
+                User reviewer = users.get((int) (Math.random() * users.size()));
+                int rating = 1 + (int) (Math.random() * 5); // 1-5 stars
+
+                Review review = Review.builder()
+                        .product(product)
+                        .user(reviewer)
+                        .rating(rating)
+                        .comment(generateReviewComment(rating))
+                        .build();
+
+                reviewRepository.save(review);
+                reviewCount++;
+            }
+        }
+
+        // Create several orders to test order-related slow queries
+        int orderCount = 0;
+        for (User user : users) {
+            // Create 2-5 orders per user
+            int numOrders = 2 + (int) (Math.random() * 4);
+            for (int i = 0; i < numOrders; i++) {
+                Order order = Order.builder()
+                        .user(user)
+                        .status(OrderStatus.values()[(int) (Math.random() * OrderStatus.values().length)])
+                        .total(BigDecimal.ZERO)
+                        .finalTotal(BigDecimal.ZERO)
+                        .items(new ArrayList<>())
+                        .build();
+
+                if (!user.getAddresses().isEmpty()) {
+                    order.setShippingAddress(user.getAddresses().get(0));
+                }
+
+                // Add 1-4 items to each order
+                int numItems = 1 + (int) (Math.random() * 4);
+                BigDecimal orderTotal = BigDecimal.ZERO;
+
+                for (int j = 0; j < numItems; j++) {
+                    Product product = products.get((int) (Math.random() * products.size()));
+                    int quantity = 1 + (int) (Math.random() * 3);
+
+                    OrderItem item = OrderItem.builder()
+                            .order(order)
+                            .product(product)
+                            .quantity(quantity)
+                            .price(product.getPrice())
+                            .build();
+
+                    order.getItems().add(item);
+                    orderTotal = orderTotal.add(product.getPrice().multiply(new BigDecimal(quantity)));
+                }
+
+                order.setTotal(orderTotal);
+                order.setFinalTotal(orderTotal);
+
+                orderRepository.save(order);
+                orderCount++;
+            }
+        }
+
+        log.info("Created {} reviews and {} orders for testing slow queries", reviewCount, orderCount);
+    }
+
+    private String generateReviewComment(int rating) {
+        String[] greatComments = {
+                "Excellent product! Highly recommended.",
+                "Best purchase I've made this year!",
+                "Amazing quality, exceeded my expectations.",
+                "Perfect! Will definitely buy again.",
+                "Outstanding product, fast shipping too!"
+        };
+
+        String[] goodComments = {
+                "Good product, works as described.",
+                "Satisfied with this purchase.",
+                "Nice quality for the price.",
+                "Would recommend to others."
+        };
+
+        String[] averageComments = {
+                "It's okay, nothing special.",
+                "Meets basic expectations.",
+                "Average product, could be better."
+        };
+
+        String[] poorComments = {
+                "Not as good as I expected.",
+                "Disappointed with the quality.",
+                "Would not buy again.",
+                "Below average, not worth the price.",
+                "Terrible product, waste of money."
+        };
+
+        if (rating >= 5) {
+            return greatComments[(int) (Math.random() * greatComments.length)];
+        } else if (rating >= 4) {
+            return goodComments[(int) (Math.random() * goodComments.length)];
+        } else if (rating >= 3) {
+            return averageComments[(int) (Math.random() * averageComments.length)];
+        } else {
+            return poorComments[(int) (Math.random() * poorComments.length)];
+        }
     }
 }

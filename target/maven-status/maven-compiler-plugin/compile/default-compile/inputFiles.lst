@@ -1,5 +1,6 @@
 C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\BuggyShopApplication.java
 C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\config\DataInitializer.java
+C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\controller\AnalyticsController.java
 C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\controller\InventoryController.java
 C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\controller\OrderController.java
 C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\controller\ProductController.java
@@ -34,6 +35,8 @@ C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\repository\OrderRepository.
 C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\repository\ProductRepository.java
 C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\repository\ReviewRepository.java
 C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\repository\UserRepository.java
+C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\scheduled\ErrorGeneratorScheduler.java
+C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\service\AnalyticsService.java
 C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\service\InventoryService.java
 C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\service\OrderService.java
 C:\Users\ppyrc\BuggyShop\src\main\java\com\buggyshop\service\ProductService.java

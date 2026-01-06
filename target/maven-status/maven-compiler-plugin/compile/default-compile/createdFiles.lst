@@ -24,6 +24,7 @@ com\buggyshop\entity\Category.class
 com\buggyshop\entity\Review.class
 com\buggyshop\dto\ProductRequest.class
 com\buggyshop\exception\GlobalExceptionHandler.class
+com\buggyshop\controller\AnalyticsController.class
 com\buggyshop\exception\InsufficientInventoryException.class
 com\buggyshop\entity\OrderItem.class
 com\buggyshop\dto\ProductRequest$ProductRequestBuilder.class
@@ -39,6 +40,7 @@ com\buggyshop\dto\ProductResponse$ProductResponseBuilder.class
 com\buggyshop\repository\UserRepository.class
 com\buggyshop\dto\OrderRequest.class
 com\buggyshop\entity\Cart$CartBuilder.class
+com\buggyshop\service\AnalyticsService.class
 com\buggyshop\repository\AddressRepository.class
 com\buggyshop\entity\Review$ReviewBuilder.class
 com\buggyshop\dto\OrderRequest$OrderRequestBuilder.class
