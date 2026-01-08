@@ -29,9 +29,11 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
+    @Builder.Default
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Category> children = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "category")
     private List<Product> products = new ArrayList<>();
 }

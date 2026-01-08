@@ -345,11 +345,13 @@ public class DataInitializer implements CommandLineRunner {
                     Product product = products.get((int) (Math.random() * products.size()));
                     int quantity = 1 + (int) (Math.random() * 3);
 
+                    BigDecimal itemSubtotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));
                     OrderItem item = OrderItem.builder()
                             .order(order)
                             .product(product)
                             .quantity(quantity)
                             .price(product.getPrice())
+                            .subtotal(itemSubtotal)
                             .build();
 
                     order.getItems().add(item);
