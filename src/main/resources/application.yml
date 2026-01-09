@@ -44,6 +44,9 @@ excepthub:
   service: BuggyShop
   environment: ${ENVIRONMENT:production}
   release: ${RELEASE_VERSION:1.0.0}
+  slow-queries:
+    enabled: true
+    threshold-ms: 100  # 100ms threshold to catch more slow queries
 
 buggyshop:
   scheduler:

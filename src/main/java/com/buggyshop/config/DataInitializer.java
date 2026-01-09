@@ -36,6 +36,7 @@ public class DataInitializer implements CommandLineRunner {
         createUsers();
         createCategories();
         createProducts();
+        createCarts();
         createCoupons();
         createReviewsAndOrders();
 
@@ -88,19 +89,6 @@ public class DataInitializer implements CommandLineRunner {
 
         addressRepository.save(address1);
         addressRepository.save(address2);
-
-        Cart cart1 = Cart.builder()
-                .user(user1)
-                .items(new ArrayList<>())
-                .build();
-
-        Cart cart2 = Cart.builder()
-                .user(user2)
-                .items(new ArrayList<>())
-                .build();
-
-        cartRepository.save(cart1);
-        cartRepository.save(cart2);
 
         log.info("Created {} users", 2);
     }
@@ -254,6 +242,62 @@ public class DataInitializer implements CommandLineRunner {
         inventoryRepository.saveAll(List.of(inv1, inv2, inv3, inv4, inv5, inv6, inv7));
 
         log.info("Created {} products with inventory", 7);
+    }
+
+    private void createCarts() {
+        List<User> users = userRepository.findAll();
+        List<Product> products = productRepository.findAll();
+
+        if (users.isEmpty() || products.isEmpty()) {
+            log.warn("Cannot create carts - no users or products found");
+            return;
+        }
+
+        // Create cart for user 1 (john@example.com)
+        User user1 = users.get(0);
+        Cart cart1 = Cart.builder()
+                .user(user1)
+                .items(new ArrayList<>())
+                .build();
+        cart1 = cartRepository.save(cart1);
+
+        // Add 2-3 products to cart1
+        for (int i = 0; i < 3; i++) {
+            if (i < products.size()) {
+                Product product = products.get(i);
+                CartItem cartItem = CartItem.builder()
+                        .cart(cart1)
+                        .product(product)
+                        .quantity(1 + (int) (Math.random() * 2)) // 1-2 items
+                        .build();
+                cart1.getItems().add(cartItem);
+            }
+        }
+        cartRepository.save(cart1);
+
+        // Create cart for user 2 (jane@example.com) if exists
+        if (users.size() > 1) {
+            User user2 = users.get(1);
+            Cart cart2 = Cart.builder()
+                    .user(user2)
+                    .items(new ArrayList<>())
+                    .build();
+            cart2 = cartRepository.save(cart2);
+
+            // Add 1-2 products to cart2
+            for (int i = 3; i < 5 && i < products.size(); i++) {
+                Product product = products.get(i);
+                CartItem cartItem = CartItem.builder()
+                        .cart(cart2)
+                        .product(product)
+                        .quantity(1)
+                        .build();
+                cart2.getItems().add(cartItem);
+            }
+            cartRepository.save(cart2);
+        }
+
+        log.info("Created {} carts with items", users.size());
     }
 
     private void createCoupons() {

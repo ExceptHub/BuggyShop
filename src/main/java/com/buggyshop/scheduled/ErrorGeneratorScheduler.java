@@ -1,62 +1,62 @@
-//package com.buggyshop.scheduled;
-//
-//import com.buggyshop.dto.OrderRequest;
-//import com.buggyshop.entity.Product;
-//import com.buggyshop.repository.InventoryRepository;
-//import com.buggyshop.repository.ProductRepository;
-//import com.buggyshop.service.InventoryService;
-//import com.buggyshop.service.OrderService;
-//import com.buggyshop.service.ProductService;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-//import org.springframework.scheduling.annotation.Scheduled;
-//import org.springframework.stereotype.Component;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import java.math.BigDecimal;
-//import java.util.List;
-//import java.util.Random;
-//
-///**
-// * Scheduled tasks that automatically generate various errors for testing ExceptHub.
-// *
-// * These jobs run periodically and trigger different types of realistic bugs:
-// * - Database errors (not found, deadlocks, concurrent updates)
-// * - Business logic errors (insufficient inventory, expired coupons)
-// * - Validation errors (negative prices, invalid states)
-// * - Concurrency issues (race conditions, optimistic locking)
-// *
-// * To disable: Set buggyshop.scheduler.enabled=false in application.yml
-// */
-//@Component
-//@Slf4j
-//@RequiredArgsConstructor
-//@ConditionalOnProperty(name = "buggyshop.scheduler.enabled", havingValue = "true", matchIfMissing = true)
-//public class ErrorGeneratorScheduler {
-//
-//    private final ProductService productService;
-//    private final InventoryService inventoryService;
-//    private final OrderService orderService;
-//    private final ProductRepository productRepository;
-//    private final InventoryRepository inventoryRepository;
-//    private final Random random = new Random();
-//
-//    /**
-//     * Cron 1: Product Not Found Error
-//     * Runs every 5 minutes
-//     * Tries to fetch non-existent products
-//     */
-//    @Scheduled(fixedDelay = 300000) // 5 minutes
-//    public void generateProductNotFoundException() {
-//        try {
-//            long nonExistentId = 9999L + random.nextInt(1000);
-//            log.info("🔴 CRON: Attempting to fetch non-existent product ID: {}", nonExistentId);
-//            productService.getProduct(nonExistentId);
-//        } catch (Exception e) {
-//            log.error("✅ Expected error generated: {}", e.getMessage());
-//        }
-//    }
+package com.buggyshop.scheduled;
+
+import com.buggyshop.dto.OrderRequest;
+import com.buggyshop.entity.Product;
+import com.buggyshop.repository.InventoryRepository;
+import com.buggyshop.repository.ProductRepository;
+import com.buggyshop.service.InventoryService;
+import com.buggyshop.service.OrderService;
+import com.buggyshop.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * Scheduled tasks that automatically generate various errors for testing ExceptHub.
+ *
+ * These jobs run periodically and trigger different types of realistic bugs:
+ * - Database errors (not found, deadlocks, concurrent updates)
+ * - Business logic errors (insufficient inventory, expired coupons)
+ * - Validation errors (negative prices, invalid states)
+ * - Concurrency issues (race conditions, optimistic locking)
+ *
+ * To disable: Set buggyshop.scheduler.enabled=false in application.yml
+ */
+@Component
+@Slf4j
+@RequiredArgsConstructor
+@ConditionalOnProperty(name = "buggyshop.scheduler.enabled", havingValue = "true", matchIfMissing = true)
+public class ErrorGeneratorScheduler {
+
+    private final ProductService productService;
+    private final InventoryService inventoryService;
+    private final OrderService orderService;
+    private final ProductRepository productRepository;
+    private final InventoryRepository inventoryRepository;
+    private final Random random = new Random();
+
+    /**
+     * Cron 1: Product Not Found Error
+     * Runs every 5 minutes
+     * Tries to fetch non-existent products
+     */
+    @Scheduled(fixedDelay = 60000) // 5 minutes
+    public void generateProductNotFoundException() {
+        try {
+            long nonExistentId = 9999L + random.nextInt(1000);
+            log.info("🔴 CRON: Attempting to fetch non-existent product ID: {}", nonExistentId);
+            productService.getProduct(nonExistentId);
+        } catch (Exception e) {
+            log.error("✅ Expected error generated: {}", e.getMessage());
+        }
+    }
 //
 //    /**
 //     * Cron 2: Insufficient Inventory Error
@@ -479,4 +479,4 @@
 //        log.info("  🎯 Testing realistic e-commerce bugs");
 //        log.info("  ⏰ Next errors will be generated within 5-30 minutes");
 //    }
-//}
+}
