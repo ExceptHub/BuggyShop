@@ -58,7 +58,7 @@
         <dependency>
             <groupId>io.github.excepthub</groupId>
             <artifactId>excepthub-spring-boot-starter</artifactId>
-            <version>1.0.21</version>
+            <version>1.0.22</version>
         </dependency>
 
         <!-- Required for slow query detection -->
