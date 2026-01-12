@@ -39,7 +39,7 @@ logging:
 
 excepthub:
   enabled: ${EXCEPTHUB_ENABLED:true}
-  api-key: ${EXCEPTHUB_API_KEY:eak_46581a3d810c45c180cf99125f817033}
+  api-key: ${EXCEPTHUB_API_KEY:eak_007795e5f536411194bebb0bc9f476fa}
   endpoint: ${EXCEPTHUB_ENDPOINT:https://api.excepthub.dev/api/v1/errors}
   service: BuggyShop
   environment: ${ENVIRONMENT:production}
