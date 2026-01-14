@@ -57,69 +57,69 @@ public class ErrorGeneratorScheduler {
             log.error("✅ Expected error generated: {}", e.getMessage());
         }
     }
-//
-//    /**
-//     * Cron 2: Insufficient Inventory Error
-//     * Runs every 7 minutes
-//     * Tries to reserve more stock than available
-//     */
-//    @Scheduled(fixedDelay = 420000) // 7 minutes
-//    public void generateInsufficientInventoryError() {
-//        try {
-//            // Try to reserve 1000 units of the limited edition item (only 5 available)
-//            Long limitedProductId = 7L;
-//            int impossibleQuantity = 1000;
-//            log.info("🔴 CRON: Attempting to reserve {} units of product {} (only 5 available)",
-//                    impossibleQuantity, limitedProductId);
-//            inventoryService.reserveStock(limitedProductId, impossibleQuantity);
-//        } catch (Exception e) {
-//            log.error("✅ Expected error generated: {}", e.getMessage());
-//        }
-//    }
-//
-//    /**
-//     * Cron 3: Expired Coupon Error
-//     * Runs every 10 minutes
-//     * Tries to create orders with expired coupons
-//     */
-//    @Scheduled(fixedDelay = 600000) // 10 minutes
-//    public void generateExpiredCouponError() {
-//        try {
-//            OrderRequest request = new OrderRequest();
-//            request.setUserId(1L);
-//            request.setCartId(1L);
-//            request.setShippingAddressId(1L);
-//            request.setCouponCode("EXPIRED");
-//
-//            log.info("🔴 CRON: Attempting to create order with expired coupon: EXPIRED");
-//            orderService.createOrder(request);
-//        } catch (Exception e) {
-//            log.error("✅ Expected error generated: {}", e.getMessage());
-//        }
-//    }
-//
-//    /**
-//     * Cron 4: Invalid Price Update (Validation Error)
-//     * Runs every 12 minutes
-//     * Tries to update product with negative price
-//     */
-//    @Scheduled(fixedDelay = 720000) // 12 minutes
-//    public void generateValidationError() {
-//        try {
-//            Long productId = 1L;
-//            BigDecimal invalidPrice = new BigDecimal("-99.99");
-//
-//            log.info("🔴 CRON: Attempting to update product {} with negative price: {}",
-//                    productId, invalidPrice);
-//
-//            Product product = productRepository.findById(productId).orElseThrow();
-//            product.setPrice(invalidPrice);
-//            productRepository.save(product);
-//        } catch (Exception e) {
-//            log.error("✅ Expected error generated: {}", e.getMessage());
-//        }
-//    }
-//
+
+    /**
+     * Cron 2: Insufficient Inventory Error
+     * Runs every 7 minutes
+     * Tries to reserve more stock than available
+     */
+    @Scheduled(fixedDelay = 420000) // 7 minutes
+    public void generateInsufficientInventoryError() {
+        try {
+            // Try to reserve 1000 units of the limited edition item (only 5 available)
+            Long limitedProductId = 7L;
+            int impossibleQuantity = 1000;
+            log.info("🔴 CRON: Attempting to reserve {} units of product {} (only 5 available)",
+                    impossibleQuantity, limitedProductId);
+            inventoryService.reserveStock(limitedProductId, impossibleQuantity);
+        } catch (Exception e) {
+            log.error("✅ Expected error generated: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * Cron 3: Expired Coupon Error
+     * Runs every 10 minutes
+     * Tries to create orders with expired coupons
+     */
+    @Scheduled(fixedDelay = 600000) // 10 minutes
+    public void generateExpiredCouponError() {
+        try {
+            OrderRequest request = new OrderRequest();
+            request.setUserId(1L);
+            request.setCartId(1L);
+            request.setShippingAddressId(1L);
+            request.setCouponCode("EXPIRED");
+
+            log.info("🔴 CRON: Attempting to create order with expired coupon: EXPIRED");
+            orderService.createOrder(request);
+        } catch (Exception e) {
+            log.error("✅ Expected error generated: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * Cron 4: Invalid Price Update (Validation Error)
+     * Runs every 12 minutes
+     * Tries to update product with negative price
+     */
+    @Scheduled(fixedDelay = 720000) // 12 minutes
+    public void generateValidationError() {
+        try {
+            Long productId = 1L;
+            BigDecimal invalidPrice = new BigDecimal("-99.99");
+
+            log.info("🔴 CRON: Attempting to update product {} with negative price: {}",
+                    productId, invalidPrice);
+
+            Product product = productRepository.findById(productId).orElseThrow();
+            product.setPrice(invalidPrice);
+            productRepository.save(product);
+        } catch (Exception e) {
+            log.error("✅ Expected error generated: {}", e.getMessage());
+        }
+    }
+
 //    /**
 //     * Cron 5: Concurrent Update Conflict (Optimistic Locking)
 //     * Runs every 15 minutes
